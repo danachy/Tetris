@@ -221,16 +221,17 @@ Private Sub Form_Load()
     fy = 0
     score = 0
     scoreLabel.Caption = "ตรทึ : 0"
+    
     firstBrix
     display cBox
+    
+    nextBox
 
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
    End
 End Sub
-
-
 
 
 Private Sub Timer1_Timer()
@@ -240,14 +241,24 @@ Private Sub Timer1_Timer()
       Next i
       resize = False
    End If
+   Dim showNext As Boolean
+   showNext = True
    With cBox
         If Control = True Then Exit Sub
         clear cBox
         For i = 1 To 4
             .Y(i) = .Y(i) + boxwidth
+            If .Y(i) < boxwidth Then
+                showNext = False
+            End If
         Next i
         display cBox
    End With
+   
+    If showNext Then
+        clearNextArea
+        drawBox nBox
+    End If
 End Sub
 
 
@@ -421,8 +432,7 @@ End Sub
 
 
 Private Sub nextBox()
-
-    Randomize Timer
+    Randomize
     Dim nnum As Integer
     nnum = Int(Rnd * 7) + 1
     
@@ -440,15 +450,14 @@ Private Sub nextBox()
         nBox.rot = 4
     End If
     calcBox nBox, 1
-    clearNextArea
-    drawBox nBox
+    'clearNextArea
+    'drawBox nBox
 End Sub
 
 Private Sub firstBrix()
-    Randomize Timer
+    Randomize
     Dim nnum As Integer
     nnum = Int(Rnd * 7) + 1
-    nnum = 1
     With cBox
         .num = nnum
         .r = Int(Rnd * 255) + 100
@@ -468,7 +477,6 @@ Private Sub firstBrix()
         state = 1
     End With
     calcBox cBox, 1
-    nextBox
 End Sub
 
 
