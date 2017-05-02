@@ -148,6 +148,9 @@ Const END_GAME = 27         'ESC£¬ÍË³öÓÎÏ·
 
 Public resize As Boolean
 
+Dim preNum As Integer
+Dim sameCount As Integer
+
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
 
@@ -347,7 +350,7 @@ Public Function Control() As Boolean
                    For k = 1 To 4
                        If .Y(k) = fy Then
                           gameover
-                          Control = False
+                          Control = True
                           Exit Function
                        End If
                        pos = pos + 1
@@ -430,11 +433,32 @@ Public Sub control2()
    End If
 End Sub
 
+Private Function nextNum() As Integer
+    While True
+        Randomize
+        rndSeek = Int(Rnd * 100)
+        Randomize rndSeek
+        nnum = Int(Rnd * 7) + 1
+        If nnum <> preNum Then
+            nextNum = nnum
+            sameCount = 0
+            preNum = nnum
+            Exit Function
+        End If
+        sameCount = sameCount + 1
+        If sameCount < 3 Then
+            nextNum = nnum
+            Exit Function
+        End If
+    Wend
+End Function
+
 
 Private Sub nextBox()
-    Randomize
+    'Randomize
     Dim nnum As Integer
-    nnum = Int(Rnd * 7) + 1
+    'nnum = Int(Rnd * 7) + 1
+    nnum = nextNum
     
     nBox.X(1) = 900
     nBox.Y(1) = 300
@@ -455,9 +479,12 @@ Private Sub nextBox()
 End Sub
 
 Private Sub firstBrix()
-    Randomize
+    'Randomize
     Dim nnum As Integer
-    nnum = Int(Rnd * 7) + 1
+    'nnum = Int(Rnd * 7) + 1
+    
+    nnum = nextNum
+    
     With cBox
         .num = nnum
         .r = Int(Rnd * 255) + 100
